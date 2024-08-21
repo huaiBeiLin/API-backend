@@ -6,8 +6,6 @@ import com.yuxin.springbootinit.model.entity.User;
 /**
  * 用户数据库操作
  *
- * @author <a href="https://github.com/liyuxin">程序员yuxin</a>
- * @from <a href="https://yuxin.icu">编程导航知识星球</a>
  */
 public interface UserMapper extends BaseMapper<User> {
 

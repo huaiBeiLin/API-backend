@@ -2,19 +2,21 @@ package com.yuxin.springbootinit.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import com.yuxin.springbootinit.annotation.AuthCheck;
-import com.yuxin.springbootinit.common.BaseResponse;
-import com.yuxin.springbootinit.common.DeleteRequest;
-import com.yuxin.springbootinit.common.ErrorCode;
-import com.yuxin.springbootinit.common.ResultUtils;
+import com.yuxin.springbootinit.common.*;
 import com.yuxin.springbootinit.constant.UserConstant;
 import com.yuxin.springbootinit.exception.BusinessException;
 import com.yuxin.springbootinit.exception.ThrowUtils;
 
+import com.yuxin.springbootinit.model.dto.Interface.InterfaceInvokeRequest;
 import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.springbootinit.model.enums.InterfaceInfoStatusEnum;
 import com.yuxin.springbootinit.service.InterfaceInfoService;
 import com.yuxin.springbootinit.service.UserService;
+import com.yuxin.yuapiclientsdk.client.YuApiClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 接口接口
+ * 接口管理
  * @author yuxin
  */
 @RestController
@@ -47,6 +49,9 @@ public class InterfaceController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private YuApiClient yuApiClient;
 
     // region 增删改查
 
@@ -110,7 +115,7 @@ public class InterfaceController {
      */
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> updatePost(@RequestBody InterfaceUpdateRequest interfaceUpdateRequest) {
+    public BaseResponse<Boolean> updateInterface(@RequestBody InterfaceUpdateRequest interfaceUpdateRequest) {
         if (interfaceUpdateRequest == null || interfaceUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -127,6 +132,99 @@ public class InterfaceController {
         ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
         boolean result = interfaceInfoService.updateById(interfaceInfo);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 上线接口（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> onlineInterface(@RequestBody IdRequest idRequest) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = idRequest.getId();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException((ErrorCode.NOT_FOUND_ERROR));
+        }
+        //判断该接口是否可以调用
+        com.yuxin.yuapiclientsdk.model.User user = new com.yuxin.yuapiclientsdk.model.User();
+        user.setUsername("test");
+        String username = yuApiClient.getUserNameByPost(user);
+        if (StringUtils.isBlank(username)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口验证失败");
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        // 修改接口数据库中的状态字段为上线
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 下线接口（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> offlineInterface(@RequestBody IdRequest idRequest) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = idRequest.getId();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException((ErrorCode.NOT_FOUND_ERROR));
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        // 修改接口数据库中的状态字段为下线
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 测试调用
+     *
+     * @param interfaceInvokeRequest
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> offlineInterface(@RequestBody InterfaceInvokeRequest interfaceInvokeRequest,
+                                                  HttpServletRequest request) {
+        if (interfaceInvokeRequest == null || interfaceInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = interfaceInvokeRequest.getId();
+        String requestParams = interfaceInvokeRequest.getRequestParams();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException((ErrorCode.NOT_FOUND_ERROR));
+        }
+        // 检查接口是否为已下线状态
+        if (oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()) {
+            throw  new BusinessException(ErrorCode.PARAMS_ERROR, "接口已关闭");
+        }
+
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        YuApiClient tempClient = new YuApiClient(accessKey, secretKey);
+        Gson gson = new Gson();
+        com.yuxin.yuapiclientsdk.model.User user = gson.fromJson(requestParams, com.yuxin.yuapiclientsdk.model.User.class);
+        String usernameByPost = tempClient.getUserNameByPost(user);
+        return ResultUtils.success(usernameByPost);
     }
 
     /**
@@ -188,22 +286,6 @@ public class InterfaceController {
 
     // endregion
 
-//    /**
-//     * 分页搜索（从 ES 查询，封装类）
-//     *
-//     * @param interfaceQueryRequest
-//     * @param request
-//     * @return
-//     */
-//    @PostMapping("/search/page/vo")
-//    public BaseResponse<Page<InterfaceInfo>> searchPostVOByPage(@RequestBody InterfaceQueryRequest interfaceQueryRequest,
-//            HttpServletRequest request) {
-//        long size = interfaceQueryRequest.getPageSize();
-//        // 限制爬虫
-//        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
-//        Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.searchFromEs(interfaceQueryRequest);
-//        return ResultUtils.success(InterfaceInfoService.getPostVOPage(PostPage, request));
-//    }
 
     /**
      * 编辑（用户）

@@ -54,7 +54,7 @@ public class YuApiClient {
 
     public String getUserNameByinterface(User user) {
         String json = JSONUtil.toJsonStr(user);
-        HttpResponse httpResponse = HttpRequest.interface("http://localhost:8123/api/name/user/")
+        HttpResponse httpResponse = HttpRequest.get("http://localhost:8123/api/name/user/")
                 .addHeaders(getHeaderMap(json))
                 .body(json)
                 .execute();

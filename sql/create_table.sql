@@ -29,7 +29,7 @@ create table if not exists user
 ) comment '用户' collate = utf8mb4_unicode_ci;
 
 -- 帖子表
-create table if not exists interface
+create table if not exists post
 (
     id         bigint auto_increment comment 'id' primary key,
     title      varchar(512)                       null comment '标题',
@@ -45,7 +45,7 @@ create table if not exists interface
 ) comment '帖子' collate = utf8mb4_unicode_ci;
 
 -- 帖子点赞表（硬删除）
-create table if not exists interface_thumb
+create table if not exists post_thumb
 (
     id         bigint auto_increment comment 'id' primary key,
     interfaceId     bigint                             not null comment '帖子 id',
@@ -57,7 +57,7 @@ create table if not exists interface_thumb
 ) comment '帖子点赞';
 
 -- 帖子收藏表（硬删除）
-create table if not exists interface_favour
+create table if not exists post_favour
 (
     id         bigint auto_increment comment 'id' primary key,
     interfaceId     bigint                             not null comment '帖子 id',
@@ -75,6 +75,7 @@ create table if not exists api.`interface_info`
   `name` varchar(256) not null comment '名称',
   `description` varchar(256) null comment '描述',
   `url` varchar(512) not null comment '接口地址',
+  `requestParams` text not null comment '请求参数',
   `requestHeader` text null comment '请求头',
   `responseHeader` text null comment '响应头',
   `status` int default 0 not null comment '接口状态（0-关闭，1-开启）',
@@ -84,6 +85,20 @@ create table if not exists api.`interface_info`
   `updateTime` datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
   `isDelete` tinyint default 0 not null comment '是否删除(0-未删, 1-已删)'
 ) comment '接口信息';
+
+-- 用户调用接口关系表
+create table if not exists api.`user_interface_info`
+(
+    `id` bigint not null auto_increment comment '主键' primary key,
+    `userId` bigint not null comment '调用用户 id',
+    `interfaceInfoId` bigint not null comment '接口 id',
+    `totalNum` int default 0 not null comment '总调用次数',
+    `leftNum` int default 0 not null comment '剩余调用次数',
+    `status` int default 0 not null comment '0-正常，1-禁用',
+    `createTime` datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    `updateTime` datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    `isDelete` tinyint default 0 not null comment '是否删除(0-未删, 1-已删)'
+) comment '用户调用接口关系';
 
 insert into api.`interface_info` (`name`, `description`, `url`, `requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('侯天磊', '唐鹏煊', 'www.toney-kub.info', '彭金鑫', '万志泽', 0, '方修洁', 162982980);
 insert into api.`interface_info` (`name`, `description`, `url`, `requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('谭琪', '董建辉', 'www.yetta-hirthe.org', '侯思淼', '胡熠彤', 0, '雷伟祺', 51701);

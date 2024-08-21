@@ -3,8 +3,6 @@ package com.yuxin.springbootinit.common;
 /**
  * 返回工具类
  *
- * @author <a href="https://github.com/liyuxin">程序员yuxin</a>
- * @from <a href="https://yuxin.icu">编程导航知识星球</a>
  */
 public class ResultUtils {
 
