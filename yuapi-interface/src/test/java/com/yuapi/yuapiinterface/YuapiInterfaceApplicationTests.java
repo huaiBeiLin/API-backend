@@ -17,7 +17,7 @@ class YuapiInterfaceApplicationTests {
         String result = yuApiClient.getNameByGet("yuxin");
         User user = new User();
         user.setUsername("yuxin");
-        String usernameByinterface = yuApiClient.getUserNameByinterface(user);
+        String usernameByinterface = yuApiClient.getUserNameByPost(user);
         System.out.println(result);
         System.out.println(usernameByinterface);
     }
