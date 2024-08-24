@@ -8,11 +8,13 @@
     <name>yuapi-client-sdk</name>
     <description>yuapi-client-sdk</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.7.6</spring-boot.version>
+
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -51,6 +53,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 
 
 </project>

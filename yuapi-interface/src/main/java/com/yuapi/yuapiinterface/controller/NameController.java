@@ -19,12 +19,12 @@ public class NameController {
         return "GET 你的名字是" + name;
     }
 
-    @interfaceMapping("/post")
+    @PostMapping("/post")
     public String getNameByinterface(@RequestParam String name) {
         return "interface 你的名字是" + name;
     }
 
-    @interfaceMapping("/user")
+    @PostMapping("/user")
     public String getUserNameByinterface(@RequestBody User user, HttpServletRequest request) {
         String accessKey = request.getHeader("accessKey");
         String nonce = request.getHeader("nonce");
