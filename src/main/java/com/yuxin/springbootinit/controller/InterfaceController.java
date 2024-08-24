@@ -200,7 +200,7 @@ public class InterfaceController {
      * @return
      */
     @PostMapping("/invoke")
-    public BaseResponse<Object> offlineInterface(@RequestBody InterfaceInvokeRequest interfaceInvokeRequest,
+    public BaseResponse<Object> invokeInterface(@RequestBody InterfaceInvokeRequest interfaceInvokeRequest,
                                                   HttpServletRequest request) {
         if (interfaceInvokeRequest == null || interfaceInvokeRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);

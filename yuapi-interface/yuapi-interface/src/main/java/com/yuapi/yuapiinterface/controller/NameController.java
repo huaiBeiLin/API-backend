@@ -19,13 +19,13 @@ public class NameController {
         return "GET 你的名字是" + name;
     }
 
-    @interfaceMapping("/post")
-    public String getNameByinterface(@RequestParam String name) {
-        return "interface 你的名字是" + name;
+    @PostMapping("/post")
+    public String getNameByPost(@RequestParam String name) {
+        return "POST 你的名字是" + name;
     }
 
-    @interfaceMapping("/user")
-    public String getUserNameByinterface(@RequestBody User user, HttpServletRequest request) {
+    @PostMapping("/user")
+    public String getUserNameByPost(@RequestBody User user, HttpServletRequest request) {
         String accessKey = request.getHeader("accessKey");
         String nonce = request.getHeader("nonce");
         String timestamp = request.getHeader("timestamp");
@@ -47,8 +47,7 @@ public class NameController {
         if (!sign.equals(serverSign)) {
             throw new RuntimeException("无权限");
         }
-        String result = "POST 用户名字是" + user.getUsername();
-        return result;
+        return "POST 用户名字是" + user.getUsername();
     }
 
 }

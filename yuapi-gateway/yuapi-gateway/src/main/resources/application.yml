@@ -1,0 +1,34 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=source, yuxin
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+          - Path=/api/**
+#        - id: add_request_header_route
+#          uri: http://localhost:8123
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - AddRequestHeader=yuxin, swag
+#            - AddRequestParameter=name, dog
+#            - name: CircuitBreaker
+#              args:
+#                name: myCircuitBreaker
+#                fallbackUri: forward:/fallback
+#        - id: yuxin-fallback
+#          uri: https://sanjin.com
+#          predicates:
+#            - Path=/fallback
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
