@@ -8,7 +8,7 @@ import com.yuxin.springbootinit.constant.FileConstant;
 import com.yuxin.springbootinit.exception.BusinessException;
 import com.yuxin.springbootinit.manager.CosManager;
 import com.yuxin.springbootinit.model.dto.file.UploadFileRequest;
-import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.yuapicommon.model.entity.User;
 import com.yuxin.springbootinit.model.enums.FileUploadBizEnum;
 import com.yuxin.springbootinit.service.UserService;
 import java.io.File;

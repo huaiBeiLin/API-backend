@@ -1,6 +1,6 @@
 package com.yuxin.springbootinit.service;
 
-import com.yuxin.springbootinit.model.entity.InterfaceInfo;
+import com.yuxin.yuapicommon.model.entity.InterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -17,4 +17,5 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
      * @param add
      */
     void validInterface(InterfaceInfo interfaceInfo, boolean add);
+
 }

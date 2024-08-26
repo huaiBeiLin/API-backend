@@ -1,6 +1,5 @@
 package com.yuxin.springbootinit.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import com.yuxin.springbootinit.annotation.AuthCheck;
@@ -10,7 +9,7 @@ import com.yuxin.springbootinit.exception.BusinessException;
 import com.yuxin.springbootinit.exception.ThrowUtils;
 
 import com.yuxin.springbootinit.model.dto.Interface.InterfaceInvokeRequest;
-import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.yuapicommon.model.entity.User;
 import com.yuxin.springbootinit.model.enums.InterfaceInfoStatusEnum;
 import com.yuxin.springbootinit.service.InterfaceInfoService;
 import com.yuxin.springbootinit.service.UserService;
@@ -29,11 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.yuxin.springbootinit.model.dto.Interface.InterfaceEditRequest;
 import com.yuxin.springbootinit.model.dto.Interface.InterfaceQueryRequest;
 import com.yuxin.springbootinit.model.dto.Interface.InterfaceUpdateRequest;
-import com.yuxin.springbootinit.model.entity.InterfaceInfo;
-import com.yuxin.springbootinit.service.InterfaceInfoService;
+import com.yuxin.yuapicommon.model.entity.InterfaceInfo;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 接口管理

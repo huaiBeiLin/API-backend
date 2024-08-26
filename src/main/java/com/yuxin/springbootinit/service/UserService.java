@@ -3,11 +3,13 @@ package com.yuxin.springbootinit.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yuxin.springbootinit.model.dto.user.UserQueryRequest;
-import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.yuapicommon.model.entity.User;
 import com.yuxin.springbootinit.model.vo.LoginUserVO;
 import com.yuxin.springbootinit.model.vo.UserVO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import com.yuxin.yuapicommon.model.entity.User;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 /**

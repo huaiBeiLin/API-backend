@@ -1,4 +1,4 @@
-package com.yuxin.springbootinit.model.entity;
+package com.yuxin.yuapicommon.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;

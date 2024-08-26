@@ -16,7 +16,7 @@ import com.yuxin.springbootinit.model.dto.user.UserQueryRequest;
 import com.yuxin.springbootinit.model.dto.user.UserRegisterRequest;
 import com.yuxin.springbootinit.model.dto.user.UserUpdateMyRequest;
 import com.yuxin.springbootinit.model.dto.user.UserUpdateRequest;
-import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.yuapicommon.model.entity.User;
 import com.yuxin.springbootinit.model.vo.LoginUserVO;
 import com.yuxin.springbootinit.model.vo.UserVO;
 import com.yuxin.springbootinit.service.UserService;

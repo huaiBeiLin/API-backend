@@ -12,7 +12,7 @@ import com.yuxin.springbootinit.constant.CommonConstant;
 import com.yuxin.springbootinit.exception.BusinessException;
 import com.yuxin.springbootinit.mapper.UserMapper;
 import com.yuxin.springbootinit.model.dto.user.UserQueryRequest;
-import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.yuapicommon.model.entity.User;
 import com.yuxin.springbootinit.model.enums.UserRoleEnum;
 import com.yuxin.springbootinit.model.vo.LoginUserVO;
 import com.yuxin.springbootinit.model.vo.UserVO;
@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

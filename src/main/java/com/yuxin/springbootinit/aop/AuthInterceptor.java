@@ -3,7 +3,7 @@ package com.yuxin.springbootinit.aop;
 import com.yuxin.springbootinit.annotation.AuthCheck;
 import com.yuxin.springbootinit.common.ErrorCode;
 import com.yuxin.springbootinit.exception.BusinessException;
-import com.yuxin.springbootinit.model.entity.User;
+import com.yuxin.yuapicommon.model.entity.User;
 import com.yuxin.springbootinit.model.enums.UserRoleEnum;
 import com.yuxin.springbootinit.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;

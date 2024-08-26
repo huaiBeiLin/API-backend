@@ -1,6 +1,6 @@
 package com.yuxin.springbootinit.mapper;
 
-import com.yuxin.springbootinit.model.entity.UserInterfaceInfo;
+import com.yuxin.yuapicommon.model.entity.UserInterfaceInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
